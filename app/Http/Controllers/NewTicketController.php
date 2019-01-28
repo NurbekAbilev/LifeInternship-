@@ -19,9 +19,7 @@ class NewTicketController extends Controller
 
     public function form(Request $request)
     {
-        \Log::debug($request->input());
-
-        $validator = Validator::make($request->all(), [
+        $request->validate([
             'full-name' => 'required',
             'email' => 'email',
             'phone' => 'required',
@@ -29,12 +27,6 @@ class NewTicketController extends Controller
             'description' => 'required',
             'attachment' => 'file|max:10240' // 10 mb
         ]);
-
-        if ($validator->fails()) {
-            return back()
-                ->withErrors($validator)
-                ->withInput();
-        }
 
         $ticket = new Ticket;
         $ticket->full_name = $request->get('full-name');

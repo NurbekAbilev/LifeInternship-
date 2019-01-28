@@ -16,6 +16,7 @@
                     <li class="{{ $ticket->statusColor() }}">Статус: {{$ticket->status->name}}</li>
                     @if ($ticket->admin_id)
                         <li>Админ: {{ $ticket->admin->name }}</li>
+                        <li>Время: {{ $ticket->answer_time }}</li>
                     @endif
                 </ul>
                 <p>Описание</p>

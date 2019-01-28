@@ -47,6 +47,6 @@ class NewTicketController extends Controller
         $messageRaw = "Спасибо за обращение в службу поддержки ChocoLife. Можете отслеживать ваш запрос здесь: ";
         $ticket->save();
         MailSender::send($messageRaw, $ticket);
-        return redirect()->route('ticket.index', ['hash' => $hash]);
+        return redirect()->route('ticket.index', ['hash' => $ticket->hash]);
     }
 }

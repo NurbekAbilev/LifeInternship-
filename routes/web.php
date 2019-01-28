@@ -18,6 +18,7 @@ Route::get('/ticket/{ticket}', 'TicketController@index')->name('ticket.index');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/statistics', 'StatisticsController@index')->name('statistics.index');
+    Route::get('/statistics/show', 'StatisticsController@show')->name('statistics.show');
     Route::post('/ticket/{ticket}', 'TicketController@comment')->name('ticket.comment');
     Route::post('/ticket/{ticket}/process', 'TicketController@process')->name('ticket.process');
     Route::post('/ticket/{ticket}/close', 'TicketController@close')->name('ticket.close');

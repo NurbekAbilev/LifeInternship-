@@ -72,6 +72,7 @@ class TicketController extends Controller
             if ($comment->admin_only == false && Auth::check() && Auth::user()->isAdmin()) {
                 $ticket->ticket_status = 4;
                 $ticket->admin_id = Auth::user()->id;
+                $ticket->answer_time = date('d.m.Y H:i:s');
                 $ticket->save();
                 $messageRaw = "Вам ответили на почту";
                 MailSender::send($messageRaw, $ticket);

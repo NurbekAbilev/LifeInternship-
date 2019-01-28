@@ -3,7 +3,8 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class CreateTicketTable extends Migration {
+class CreateTicketTable extends Migration
+{
 
 	/**
 	 * Run the migrations.
@@ -12,8 +13,7 @@ class CreateTicketTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('ticket', function(Blueprint $table)
-		{
+		Schema::create('ticket', function (Blueprint $table) {
 			$table->integer('id')->autoIncrement();;
 			$table->string('full_name');
 			$table->string('email');
@@ -23,12 +23,12 @@ class CreateTicketTable extends Migration {
 			$table->integer('ticket_category')->nullable();
 			$table->integer('ticket_status')->nullable();
 			$table->integer('admin_id')->unsigned()->nullable();
+			$table->date('answer_time')->nullable();
 			$table->string('hash');
 			$table->timestamps();
 		});
 
-		Schema::table('ticket', function(Blueprint $table)
-		{
+		Schema::table('ticket', function (Blueprint $table) {
 			$table->foreign('admin_id')->references('id')->on('users');
 
 		});

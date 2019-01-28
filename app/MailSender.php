@@ -8,12 +8,8 @@ use Auth;
 class MailSender
 {
 
-    public static function send($messageRaw, $hash)
+    public static function send($messageRaw, $ticket)
     {
-        $ticket = Ticket::where('hash', $hash)->first();
-        if (is_null($ticket)) {
-            abort(404);
-        }
         $hashLink = route('ticket.index', ['hash' => $ticket->hash]);
         $category = $ticket->category->name;
         $mailFrom = "lifeintern@mail.ru";

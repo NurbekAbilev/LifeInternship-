@@ -7,7 +7,6 @@ use App\Models\TicketCategory;
 use App\Models\Ticket;
 use Auth;
 use Validator;
-use Hash;
 use App\MailSender;
 
 class NewTicketController extends Controller
@@ -53,11 +52,9 @@ class NewTicketController extends Controller
             $file_name = $file->hashName();
             $ticket->file_path = $file_name;
         }
-        $hash = $ticket->hash;
         $messageRaw = "Спасибо за обращение в службу поддержки ChocoLife. Можете отслеживать ваш запрос здесь: ";
-
         $ticket->save();
-        MailSender::send($messageRaw, $hash);
+        MailSender::send($messageRaw, $ticket);
         return redirect()->route('ticket.index', ['hash' => $hash]);
     }
 }

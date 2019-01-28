@@ -74,7 +74,7 @@ class TicketController extends Controller
                 $ticket->admin_id = Auth::user()->id;
                 $ticket->save();
                 $messageRaw = "Вам ответили на почту";
-                MailSender::send($messageRaw, $ticket->hash);
+                MailSender::send($messageRaw, $ticket);
             }
         }
 

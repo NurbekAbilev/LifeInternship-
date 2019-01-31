@@ -13,13 +13,13 @@
 
 						<div class="input-group">
 							<input type="text" name="name" class="form-control {{ $errors->has('name') ? 'is-invalid' : '' }}"
-							placeholder="Name" value="{{ old('name') ? old('name') : $ticketCategory->name }}">
+								placeholder="Name" value="{{ old('name') ? old('name') : $ticketCategory->name }}">
 
 							<div class="input-group-append">
 								<button class="btn btn-outline-primary">Изменить</button>
 
 								<button class="btn btn-outline-danger" type="button"
-								onclick="document.getElementById('delete').submit();">Удалить</button>
+									onclick="document.getElementById('delete').submit();">Удалить</button>
 							</div>
 						</div>
 					</form>

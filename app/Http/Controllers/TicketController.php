@@ -62,21 +62,23 @@ class TicketController extends Controller
     {
         $comment = new Comment;
 
-        $comment->content = request('content');
-        if (!is_null($comment->content)) {
-            $comment->ticket_id = $ticket->id;
-            $comment->user_id = Auth::check() ? Auth::user()->id : null;
-            $comment->admin_only = request('admin_only') ? true : false;
-            $comment->save();
+        $attributes = request()->validate([
+            'content' => 'required'
+        ]);
 
-            if ($comment->admin_only == false && Auth::check() && Auth::user()->isAdmin()) {
-                $ticket->ticket_status = 4;
-                $ticket->admin_id = Auth::user()->id;
-                $ticket->answer_time = date('d.m.Y H:i:s');
-                $ticket->save();
-                $messageRaw = "Вам ответили на почту";
-                MailSender::send($messageRaw, $ticket);
-            }
+        $comment->content = $attributes['content'];
+        $comment->ticket_id = $ticket->id;
+        $comment->user_id = Auth::check() ? Auth::user()->id : null;
+        $comment->admin_only = request('admin_only') ? true : false;
+        $comment->save();
+
+        if ($comment->admin_only == false && Auth::check() && Auth::user()->isAdmin()) {
+            $ticket->ticket_status = 4;
+            $ticket->admin_id = Auth::user()->id;
+            $ticket->answer_time = date('d.m.Y H:i:s');
+            $ticket->save();
+            $messageRaw = "Вам ответили на почту";
+            MailSender::send($messageRaw, $ticket);
         }
 
         return redirect('/ticket/' . $ticket->hash);

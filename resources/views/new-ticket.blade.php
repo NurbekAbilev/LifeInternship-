@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header"><h3>Новый тикет</h3></div>
+                <div class="card-header h4">Новый тикет</div>
                 
                 <div class="card-body">
                     <div class="container">
@@ -62,5 +62,3 @@
     </div>
 {{-- </div> --}}
 @endsection
-
-

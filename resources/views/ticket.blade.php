@@ -61,7 +61,8 @@
                     <form method="POST" action="/ticket/{{ $ticket->hash }}">
                         @csrf
                         
-                        <textarea class="form-control mb-3" name="content" placeholder="Комментарий"></textarea>
+                        <textarea class="form-control mb-3 {{ $errors->has('content') ? 'is-invalid' : '' }}"
+                            name="content" placeholder="Комментарий">{{ old('content') ? old('content') : '' }}</textarea>
 
                         <div class="d-flex justify-content-between align-items-center">
                             <button class="btn btn-primary">Написать</button>
@@ -75,6 +76,14 @@
                             @endif
                         </div>
                     </form>
+
+                    @if ($errors->any())
+                        <div class="alert alert-danger m-0 mt-3">
+                            @foreach ($errors->all() as $error)
+                                <div>{{ $error }}</div>
+                            @endforeach
+                        </div>
+                    @endif
                 </div>
             </div>
         @endif

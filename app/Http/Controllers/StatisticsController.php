@@ -28,6 +28,7 @@ class StatisticsController extends Controller
         ];
         return view('statistics', ['statistics' => $statistics]);
     }
+
     public function show(Request $request)
     {
         $request->validate([
@@ -53,7 +54,9 @@ class StatisticsController extends Controller
             array("key" => "Отвеченных за " . $intervals[3] . "-" . $intervals[4] . " минут", "value" => 0),
             array("key" => "Отвеченных через час", "value" => 0)
         ];
+
+        $request->flash();
+
         return view('statistics', ['statistics' => $statistics]);
     }
-
 }

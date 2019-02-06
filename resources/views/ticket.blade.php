@@ -1,4 +1,4 @@
-    @extends('layouts.app')
+@extends('layouts.app')
 
 @section('content')
 <div class="row justify-content-center">
@@ -8,35 +8,42 @@
                 <div>{{ $ticket->full_name }}</div>
                 <div class="text-secondary">{{ $ticket->created_at }}</div>
             </div>
-            <div class="card-body">
-                <ul>
-                    <li>Email: {{$ticket->email}}</li>
-                    <li>Номер: {{$ticket->phone_num}}</li>
-                    <li>Категория: {{$ticket->category->name}}</li>
-                    <li class="{{ $ticket->statusColor() }}">Статус: {{$ticket->status->name}}</li>
-                    @if ($ticket->admin_id)
-                        <li>Админ: {{ $ticket->admin->name }}</li>
-                        <li>Время: {{ $ticket->answer_time }}</li>
-                    @endif
-                </ul>
+            <div class="card-body container">
+                <div class="row no-gutters d-flex justify-content-between">
+                    <div class="col-md-8">
+                        <ul>
+                            <li>Email: {{$ticket->email}}</li>
+                            <li>Номер: {{$ticket->phone_num}}</li>
+                            <li>Категория: {{$ticket->category->name}}</li>
+                            <li class="{{ $ticket->statusColor() }}">Статус: {{$ticket->status->name}}</li>
+                            @if ($ticket->admin_id)
+                                <li>Админ: {{ $ticket->admin->name }}</li>
+                                <li>Время: {{ $ticket->answer_time }}</li>
+                            @endif
+                        </ul>
+                    </div>
+
+                    <div class="d-flex">
+                        @if (Auth::check() && Auth::user()->isAdmin())
+                           <form class="mb-2 mr-2" method="post" action="{{ route('ticket.process', ['hash' => $ticket->hash]) }}">
+                                @csrf
+
+                                <input class="btn btn-primary" type="submit" value="В обработке">
+                            </form>
+                           <form method="post" action="{{ route('ticket.close', ['hash' => $ticket->hash]) }}">
+                                @csrf
+
+                                <input class="btn btn-secondary" type="submit" value="Закрыть">
+                            </form>
+                        @endif
+                    </div>
+                </div>
                 <p>Описание</p>
                 <p>{{$ticket->description}}</p>
                 @if ($ticket->file_path)
                     <a target="_blank" rel="noopener noreferrer" href={{ route('ticket.attachment', ['hash' => $ticket->hash]) }}>
                         <button class="my-2">Прикрепленный файл</button>
                     </a>
-                @endif
-                @if (Auth::check() && Auth::user()->isAdmin())
-                   <form class="mb-2" method="post" action="{{ route('ticket.process', ['hash' => $ticket->hash]) }}">
-                        @csrf
-
-                        <input class="btn btn-primary" type="submit" value="В обработке">
-                    </form>
-                   <form method="post" action="{{ route('ticket.close', ['hash' => $ticket->hash]) }}">
-                        @csrf
-
-                        <input class="btn btn-primary" type="submit" value="Закрыть">
-                    </form>
                 @endif
             </div>
         </div>

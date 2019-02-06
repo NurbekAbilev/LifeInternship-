@@ -30,7 +30,6 @@ class CreateTicketTable extends Migration
 
 		Schema::table('ticket', function (Blueprint $table) {
 			$table->foreign('admin_id')->references('id')->on('users');
-
 		});
 	}
 

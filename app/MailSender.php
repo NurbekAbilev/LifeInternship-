@@ -19,7 +19,7 @@ class MailSender
                 $message->from($mailFrom);
                 $message->to($mailTo)->subject("Тикет $ticket->id");
             });
-            Log::info('Email was send', ['ticket' => $ticket->id]);
+            \Log::info('Email was send', ['ticket' => $ticket->id]);
         } catch (\Exception $e) {
             \Log::error($e->getMessage());
         }

@@ -63,7 +63,7 @@
                                         </ul>
                                         <p>Описание</p>
                                         <p>{{$ticket->description}}</p>
-                                        <a class="btn btn-primary" href="/ticket/{{$ticket->hash}}">Посмотреть</a>
+                                        <a class="btn btn-primary" href="/tickets/{{$ticket->hash}}">Посмотреть</a>
                                     </div>
                                 </div>
                             @endforeach 

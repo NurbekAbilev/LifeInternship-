@@ -14,13 +14,30 @@ use App\MailSender;
 class TicketController extends Controller
 {
 
-    public function index(Request $request, Ticket $ticket)
+    /*
+     *  Авторизация только для create,store,show
+     */
+    public function __construct()
     {
-        if (Auth::user() && Auth::user()->isAdmin() && $ticket->ticket_status == 1) {
-            $ticket->ticket_status = 2;
-            $ticket->save();
-        }
-        return view('ticket', ['ticket' => $ticket]);
+        $this->middleware('auth')->except(['create','store','show']);
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        $tickets = Ticket::with('status')->with('category')->orderBy('updated_at', 'desc')->orderBy('ticket_status')->get();
+        $ticketCategories = TicketCategory::all();
+        $ticketStatuses = TicketStatus::all();
+
+        return view('home', [
+            'tickets' => $tickets,
+            'categories' => $ticketCategories,
+            'statuses' => $ticketStatuses
+        ]);
     }
 
     public function search(Request $request)
@@ -108,5 +125,104 @@ class TicketController extends Controller
             abort(404); // не должен случиться, но кто знает...
         }
         return response()->file($file_path);
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        $categories = TicketCategory::orderBy('id', 'desc')->get();
+        return view('new-ticket', compact('categories'));
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        $request->validate([
+            'full-name' => 'required',
+            'email' => 'email',
+            'phone' => 'required',
+            'category' => 'required',
+            'description' => 'required',
+            'attachment' => 'file|max:10240' // 10 mb
+        ]);
+
+        $ticket = new Ticket;
+        $ticket->full_name = $request->get('full-name');
+        $ticket->email = $request->get('email');
+        $ticket->phone_num = $request->get('phone');
+        $ticket->description = $request->get('description');
+        $ticket->ticket_category = $request->get('category');
+        $ticket->ticket_status = 1;
+        $mytime = date('Y-m-d H:i:s');
+        $ticket->hash = md5($ticket->id . $mytime . $ticket->full_name . $ticket->email);
+
+        if ($request->hasFile('attachment')) {
+            $file = $request->file('attachment');
+            $file->store('attachments'); //  storage/app/attachments
+            $file_name = $file->hashName();
+            $ticket->file_path = $file_name;
+        }
+        $messageRaw = "Спасибо за обращение в службу поддержки ChocoLife. Можете отслеживать ваш запрос здесь: ";
+        $ticket->save();
+        MailSender::send($messageRaw, $ticket);
+        return redirect()->route('tickets.show', ['hash' => $ticket->hash]);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($ticket)
+    {
+        if (Auth::user() && Auth::user()->isAdmin() && $ticket->ticket_status == 1) {
+            $ticket->ticket_status = 2;
+            $ticket->save();
+        }
+        return view('ticket', ['ticket' => $ticket]);
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        abort(404);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $ticket)
+    {
+        abort(404);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        abort(404);
     }
 }

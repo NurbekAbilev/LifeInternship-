@@ -9,7 +9,7 @@
                 
                 <div class="card-body">
                     <div class="container">
-                    <form action="{{ route('ticket.create') }}" method="post" enctype="multipart/form-data">
+                    <form action="{{ route('tickets.store') }}" method="post" enctype="multipart/form-data">
                         @csrf
                           <div class="form-row">
                               <div class="form-group col-lg">

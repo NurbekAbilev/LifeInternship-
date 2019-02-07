@@ -62,7 +62,7 @@
                                             Категории
                                         </a>
                                     @endif
-                                    <a class="dropdown-item" href="/">
+                                    <a class="dropdown-item" href="{{route('tickets.create')}}">
                                         Новый тикет
                                     </a>
                                     <a class="dropdown-item" href="/statistics">

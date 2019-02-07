@@ -11,10 +11,11 @@
 |
  */
 
-Route::redirect('/', '/new-ticket');
-Route::get('/new-ticket', 'NewTicketController@index');
-Route::post('/ticket-create', 'NewTicketController@form')->name('ticket.create');
-Route::get('/ticket/{ticket}', 'TicketController@index')->name('ticket.index');
+Route::redirect('/', '/tickets/create');
+Route::resource('/tickets','TicketController');
+
+Auth::routes();
+Route::get('/tickets_api', 'HomeController@index_api')->name('index_api');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/statistics', 'StatisticsController@index')->name('statistics.index');
@@ -28,6 +29,3 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('ticketCategories', 'TicketCategoriesController')->middleware('can:access-categories');
 });
 
-Auth::routes();
-Route::get('/home', 'HomeController@index')->name('home');
-Route::get('/tickets', 'HomeController@index_api')->name('index_api');

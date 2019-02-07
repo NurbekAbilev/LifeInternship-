@@ -75,6 +75,6 @@ class Ticket extends Model
         if ($validator->passes()) {
             return true;
         }
-        return $validator->messages();
+        return false;
     }
 }

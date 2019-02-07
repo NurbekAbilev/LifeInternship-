@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\Model;
 
 class Ticket extends Model
@@ -52,5 +53,28 @@ class Ticket extends Model
     public function getRouteKeyName()
     {
         return 'hash';
+    }
+    public static function validate($ticket)
+    {
+        $validator = Validator::make(
+            array(
+                'full-name' => $ticket->full_name,
+                'email' => $ticket->email,
+                'phone_num' => $ticket->phone_num,
+                'ticket_category' => $ticket->ticket_category,
+                'description' => $ticket->description
+            ),
+            array(
+                'full-name' => 'required',
+                'email' => 'email',
+                'phone_num' => 'required',
+                'ticket_category' => 'required',
+                'description' => 'required'
+            )
+        );
+        if ($validator->passes()) {
+            return true;
+        }
+        return $validator->messages();
     }
 }

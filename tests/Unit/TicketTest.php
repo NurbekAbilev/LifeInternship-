@@ -21,15 +21,16 @@ class TicketTest extends \Codeception\Test\Unit
     public function testTicketCreation()
     {
         $ticket = new Ticket;
-        $ticket->full_name = 'John Doe';
-        $ticket->email = 'john@test.com';
+        $ticket->full_name = 'John Test';
+        $ticket->email = 'john@tes.tom';
         $ticket->phone_num = '+77777777777';
         $ticket->description = 'description';
         $ticket->ticket_category = 1;
         $ticket->ticket_status = 1;
         $ticket->hash = md5($ticket->id . date('Y-m-d H:i:s') . $ticket->full_name . $ticket->email);
-        $ticket->validate(array($ticket));
-        $this->tester->seeRecord('ticket', ['full_name' => 'John Doe']);
+        $this->assertTrue(Ticket::validate($ticket));
+        $ticket->save();
+        $this->tester->seeRecord('ticket', ['full_name' => 'John Test']);
     }
 
     public function testTicketChange()

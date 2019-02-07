@@ -9,6 +9,14 @@ class Ticket extends Model
 {
     public $table = "ticket";
 
+    private $rules = array(
+        'full_name' => 'required',
+        'email' => 'required|email',
+        'phone_num' => 'required',
+        'ticket_category' => 'required',
+        'description' => 'required'
+    );
+
     public function comments()
     {
         return $this->hasMany('App\Models\Comment', 'ticket_id', 'id')->orderBy('created_at');
@@ -54,27 +62,11 @@ class Ticket extends Model
     {
         return 'hash';
     }
-    public static function validate($ticket)
+
+    public function validate()
     {
-        $validator = Validator::make(
-            array(
-                'full-name' => $ticket->full_name,
-                'email' => $ticket->email,
-                'phone_num' => $ticket->phone_num,
-                'ticket_category' => $ticket->ticket_category,
-                'description' => $ticket->description
-            ),
-            array(
-                'full-name' => 'required',
-                'email' => 'email',
-                'phone_num' => 'required',
-                'ticket_category' => 'required',
-                'description' => 'required'
-            )
-        );
-        if ($validator->passes()) {
-            return true;
-        }
-        return $validator->messages();
+        $validator = Validator::make(json_decode(json_encode($this), true), $this->rules);
+
+        return $validator->passes();
     }
 }

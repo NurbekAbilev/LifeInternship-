@@ -18,6 +18,34 @@ class TicketTest extends \Codeception\Test\Unit
     }
 
     // tests
+    public function testValidEmail()
+    {
+        $ticket = new Ticket;
+        $ticket->full_name = 'John Doe';
+        $ticket->email = 'valid@email.com';
+        $ticket->phone_num = '+77777777777';
+        $ticket->description = 'description';
+        $ticket->ticket_category = 1;
+        $ticket->ticket_status = 1;
+        $ticket->hash = md5($ticket->id . date('Y-m-d H:i:s') . $ticket->full_name . $ticket->email);
+        $ticket->save();
+        $this->assertTrue($ticket->validate());
+    }
+
+    public function testInvalidEmail()
+    {
+        $ticket = new Ticket;
+        $ticket->full_name = 'John Doe';
+        $ticket->email = 'INVALID';
+        $ticket->phone_num = '+77777777777';
+        $ticket->description = 'description';
+        $ticket->ticket_category = 1;
+        $ticket->ticket_status = 1;
+        $ticket->hash = md5($ticket->id . date('Y-m-d H:i:s') . $ticket->full_name . $ticket->email);
+        $ticket->save();
+        $this->assertFalse($ticket->validate());
+    }
+
     public function testTicketCreation()
     {
         $ticket = new Ticket;
@@ -28,7 +56,6 @@ class TicketTest extends \Codeception\Test\Unit
         $ticket->ticket_category = 1;
         $ticket->ticket_status = 1;
         $ticket->hash = md5($ticket->id . date('Y-m-d H:i:s') . $ticket->full_name . $ticket->email);
-        $this->assertTrue(Ticket::validate($ticket));
         $ticket->save();
         $this->tester->seeRecord('ticket', ['full_name' => 'John Doe']);
     }
@@ -53,7 +80,8 @@ class TicketTest extends \Codeception\Test\Unit
         $this->tester->seeRecord('ticket', ['full_name' => 'John Test']);
         $this->tester->dontSeeRecord('ticket', ['full_name' => 'John Doe']);
     }
-    public function testTicketDelete()
+
+    public function testTicketDeletion()
     {
         Ticket::where('full_name', 'John Test')->delete();
         $this->tester->dontSeeRecord('ticket', ['full_name' => 'John Test']);

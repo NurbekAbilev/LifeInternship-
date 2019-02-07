@@ -28,7 +28,7 @@ class TicketTest extends \Codeception\Test\Unit
         $ticket->ticket_category = 1;
         $ticket->ticket_status = 1;
         $ticket->hash = md5($ticket->id . date('Y-m-d H:i:s') . $ticket->full_name . $ticket->email);
-        $this->assertTrue(Ticket::validate($ticket));
+        $this->assertTrue($ticket->validate());
         $ticket->save();
         $this->tester->seeRecord('ticket', ['full_name' => 'John Test']);
     }

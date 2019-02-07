@@ -10,6 +10,7 @@ class MailSender
 
     public static function send($messageRaw, $ticket)
     {
+        try{
         $hashLink = route('ticket.index', ['hash' => $ticket->hash]);
         $category = $ticket->category->name;
         $mailFrom = "lifeintern@mail.ru";
@@ -17,7 +18,10 @@ class MailSender
         Mail::raw($messageRaw . $hashLink, function ($message) use ($mailFrom, $mailTo, $ticket) {
             $message->from($mailFrom);
             $message->to($mailTo)->subject("Тикет $ticket->id");
-        });
+        });}
+        catch (Swift_TransportException $e) {
+            Log::warning('Email sending not supported on local');
+       }
     }
 
 

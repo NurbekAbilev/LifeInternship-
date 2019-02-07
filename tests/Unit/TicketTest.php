@@ -8,7 +8,7 @@ class TicketTest extends \Codeception\Test\Unit
      * @var \UnitTester
      */
     protected $tester;
-    
+
     protected function _before()
     {
     }
@@ -28,7 +28,7 @@ class TicketTest extends \Codeception\Test\Unit
         $ticket->ticket_category = 1;
         $ticket->ticket_status = 1;
         $ticket->hash = md5($ticket->id . date('Y-m-d H:i:s') . $ticket->full_name . $ticket->email);
-        $ticket->save();
+        $ticket->validate(array($ticket));
         $this->tester->seeRecord('ticket', ['full_name' => 'John Doe']);
     }
 
@@ -41,4 +41,10 @@ class TicketTest extends \Codeception\Test\Unit
         $this->tester->seeRecord('ticket', ['full_name' => 'John Test']);
         $this->tester->dontSeeRecord('ticket', ['full_name' => 'John Doe']);
     }
+    public function testTicketDelete()
+    {
+        Ticket::where('full_name', 'John Test')->delete();
+        $this->tester->dontSeeRecord('ticket', ['full_name' => 'John Test']);
+    }
+
 }

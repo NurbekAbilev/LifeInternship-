@@ -7,14 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Ticket extends Model
 {
-    protected $fillable=['full-name','email','phone_num','ticket_category','description'];
-    private $rules = array(
-        'full-name' => 'required',
-        'email' => 'email',
-        'phone_num' => 'required',
-        'ticket_category' => 'required',
-        'description' => 'required'
-    );
     public $table = "ticket";
 
     public function comments()
@@ -62,12 +54,27 @@ class Ticket extends Model
     {
         return 'hash';
     }
-    public function validate()
+    public static function validate($ticket)
     {
-        $v = Validator::make(json_decode(json_encode($this), true), $this->rules);
-        if ($v->passes()) {
+        $validator = Validator::make(
+            array(
+                'full-name' => $ticket->full_name,
+                'email' => $ticket->email,
+                'phone_num' => $ticket->phone_num,
+                'ticket_category' => $ticket->ticket_category,
+                'description' => $ticket->description
+            ),
+            array(
+                'full-name' => 'required',
+                'email' => 'email',
+                'phone_num' => 'required',
+                'ticket_category' => 'required',
+                'description' => 'required'
+            )
+        );
+        if ($validator->passes()) {
             return true;
         }
-        return $v->messages();
+        return $validator->messages();
     }
 }

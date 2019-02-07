@@ -23,7 +23,7 @@ class TicketTest extends \Codeception\Test\Unit
         $ticket = new Ticket;
         $ticket->full_name = 'John Doe';
         $ticket->email = 'valid@email.com';
-        $ticket->phone_num = '+77777777777';
+        $ticket->phone_num = '87477201107';
         $ticket->description = 'description';
         $ticket->ticket_category = 1;
         $ticket->ticket_status = 1;
@@ -37,7 +37,7 @@ class TicketTest extends \Codeception\Test\Unit
         $ticket = new Ticket;
         $ticket->full_name = 'John Doe';
         $ticket->email = 'INVALID';
-        $ticket->phone_num = '+77777777777';
+        $ticket->phone_num = '87477201107';
         $ticket->description = 'description';
         $ticket->ticket_category = 1;
         $ticket->ticket_status = 1;
@@ -51,7 +51,7 @@ class TicketTest extends \Codeception\Test\Unit
         $ticket = new Ticket;
         $ticket->full_name = 'John Doe';
         $ticket->email = 'john@test.com';
-        $ticket->phone_num = '+77777777777';
+        $ticket->phone_num = '87477201107';
         $ticket->description = 'description';
         $ticket->ticket_category = 1;
         $ticket->ticket_status = 1;
@@ -65,7 +65,7 @@ class TicketTest extends \Codeception\Test\Unit
         $ticket = new Ticket;
         $ticket->full_name = 'John Doe';
         $ticket->email = 'john@test.com';
-        $ticket->phone_num = '+77777777777';
+        $ticket->phone_num = '87477201107';
         $ticket->description = 'description';
         $ticket->ticket_category = 1;
         $ticket->ticket_status = 1;

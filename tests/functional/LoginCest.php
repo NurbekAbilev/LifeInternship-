@@ -6,13 +6,11 @@ class LoginCest
     {
     }
 
-    // tests
-    public function tryToTest(FunctionalTester $I)
+    /*
+     *  Работает ли аутентификация
+     */
+    public function checkAuthentication(FunctionalTester $I)
     {
-        $I->amOnPage('/login');
-        $I->fillField('email', 'admin@chocolife.me');
-        $I->fillField('password', 'secret');
-        $I->click('Login');
-        $I->amOnPage('home');
+        $I->amLoggedAs(['email' => 'admin@chocolife.me', 'password' => 'secret']);
     }
 }

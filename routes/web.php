@@ -12,14 +12,16 @@
  */
 
 Route::redirect('/', '/tickets/create');
+
+Route::get('/tickets/auto-update', 'TicketController@autoUpdate')->name('tickets.auto-update');
 Route::resource('/tickets','TicketController');
 
 Auth::routes();
-Route::get('/tickets_api', 'HomeController@index_api')->name('index_api');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/statistics', 'StatisticsController@index')->name('statistics.index');
     Route::get('/statistics/show', 'StatisticsController@show')->name('statistics.show');
+
     Route::post('/ticket/{ticket}', 'TicketController@comment')->name('ticket.comment');
     Route::post('/ticket/{ticket}/process', 'TicketController@process')->name('ticket.process');
     Route::post('/ticket/{ticket}/close', 'TicketController@close')->name('ticket.close');

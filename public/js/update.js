@@ -1,6 +1,6 @@
 var tickets = {};
 setInterval(function() {
-	fetch('/tickets')
+	fetch('tickets/auto-update')
 		.then(function(response) {
 			return response.json();
 		})

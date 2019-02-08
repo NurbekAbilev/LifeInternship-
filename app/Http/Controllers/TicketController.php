@@ -200,6 +200,7 @@ class TicketController extends Controller
      */
     public function edit($id)
     {
+        //todo
         abort(404);
     }
 
@@ -212,6 +213,7 @@ class TicketController extends Controller
      */
     public function update(Request $request, $ticket)
     {
+        //todo
         abort(404);
     }
 
@@ -223,6 +225,24 @@ class TicketController extends Controller
      */
     public function destroy($id)
     {
+        //todo
         abort(404);
+    }
+
+    /**
+     * Авто апдейт главной страницы.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function autoUpdate()
+    {
+        $tickets = Ticket::with('status')
+            ->with('category')
+            ->with('admin')
+            ->orderBy('updated_at', 'desc')
+            ->orderBy('ticket_status')
+            ->get();
+
+        return $tickets;
     }
 }

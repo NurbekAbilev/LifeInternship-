@@ -24,18 +24,7 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
-    {
-        $tickets = Ticket::with('status')->with('category')->orderBy('updated_at', 'desc')->orderBy('ticket_status')->get();
-        $ticketCategories = TicketCategory::all();
-        $ticketStatuses = TicketStatus::all();
 
-        return view('home', [
-            'tickets' => $tickets,
-            'categories' => $ticketCategories,
-            'statuses' => $ticketStatuses
-        ]);
-    }
 
     public function index_api()
     {

@@ -24,10 +24,10 @@
                         </div>
 
                         <div class="form-group col-lg">
-                                <label for="phone">Номер:</label>
-                                <input type="text" class="form-control {{ $errors->has('phone') ? ' is-invalid' : '' }}"  name="phone" id="" value="{{old('phone')}}" placeholder="Номер">    
-                                <div class="form-text text-danger">{{$errors->first('phone')}}</div>    
-                            </div>
+                            <label for="phone">Номер:</label>
+                            <input type="text" class="form-control {{ $errors->has('phone') ? ' is-invalid' : '' }}"  name="phone" id="" value="{{old('phone')}}" placeholder="Номер">    
+                            <div class="form-text text-danger">{{$errors->first('phone')}}</div>    
+                        </div>
                     </div>
 
                     <div class="form-group">
@@ -56,8 +56,7 @@
                     </div>
 
                     <button class="btn btn-primary" type="submit" name="submit">Создать Тикет</button>
-                    </form>
-                </div>
+                </form>
             </div>
         </div>
     </div>

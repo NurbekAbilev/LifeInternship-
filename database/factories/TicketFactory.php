@@ -7,8 +7,8 @@ $factory->define(App\Models\Ticket::class, function (Faker $faker) {
         'full_name' => $faker->name,
         'email' => $faker->email,
         'phone_num' => $faker->tollFreePhoneNumber,
-        'description' => $faker->text,
         'hash' => md5(str_random()),
+        'description' => $faker->text,
         'created_at' => now(),
         'updated_at' => now()
     ];

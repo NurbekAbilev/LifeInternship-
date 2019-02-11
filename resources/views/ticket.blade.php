@@ -24,13 +24,16 @@
                     </div>
 
                     <div class="d-flex">
-                        @if (Auth::check() && Auth::user()->isAdmin())
-                           <form class="mb-2 mr-2" method="post" action="{{ route('ticket.process', ['hash' => $ticket->hash]) }}">
-                                @csrf
+                        @if (Auth::check())
+                            @if (Auth::user()->isAdmin())
+                                <form class="mb-2 mr-2" method="post" action="{{ route('ticket.process', ['hash' => $ticket->hash]) }}">
+                                    @csrf
 
-                                <input class="btn btn-success" type="submit" value="В обработке">
-                            </form>
-                           <form method="post" action="{{ route('ticket.close', ['hash' => $ticket->hash]) }}">
+                                    <input class="btn btn-success" type="submit" value="В обработке">
+                                </form>
+                            @endif
+
+                            <form method="post" action="{{ route('ticket.close', ['hash' => $ticket->hash]) }}">
                                 @csrf
 
                                 <input class="btn btn-secondary" type="submit" value="Закрыть">
@@ -58,40 +61,38 @@
             </div>
         @endforeach
 
-        @if (Auth::check())
-            <div class="card mb-4">
-                <div class="card-header">Написать комментарий</div>
+        <div class="card mb-4">
+            <div class="card-header">Написать комментарий</div>
 
-                <div class="card-body">
-                    <form method="POST" action="/ticket/{{ $ticket->hash }}">
-                        @csrf
-                        
-                        <textarea class="form-control mb-3 {{ $errors->has('content') ? 'is-invalid' : '' }}"
-                            name="content" placeholder="Комментарий">{{ old('content') ? old('content') : '' }}</textarea>
+            <div class="card-body">
+                <form method="POST" action="/ticket/{{ $ticket->hash }}">
+                    @csrf
+                    
+                    <textarea class="form-control mb-3 {{ $errors->has('content') ? 'is-invalid' : '' }}"
+                        name="content" placeholder="Комментарий">{{ old('content') ? old('content') : '' }}</textarea>
 
-                        <div class="d-flex justify-content-between align-items-center">
-                            <button class="btn btn-success">Написать</button>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <button class="btn btn-success">Написать</button>
 
-                            @if (Auth::check() && Auth::user()->isAdmin())
-                                <div class="form-group form-check mb-0 h-100">
-                                    <input type="checkbox" name="admin_only" class="form-check-input" id="check">
+                        @if (Auth::check() && Auth::user()->isAdmin())
+                            <div class="form-group form-check mb-0 h-100">
+                                <input type="checkbox" name="admin_only" class="form-check-input" id="check">
 
-                                    <label class="form-check-label" for="check">Только для админов</label>
-                                </div>
-                            @endif
-                        </div>
-                    </form>
+                                <label class="form-check-label" for="check">Только для админов</label>
+                            </div>
+                        @endif
+                    </div>
+                </form>
 
-                    @if ($errors->any())
-                        <div class="alert alert-danger m-0 mt-3">
-                            @foreach ($errors->all() as $error)
-                                <div>{{ $error }}</div>
-                            @endforeach
-                        </div>
-                    @endif
-                </div>
+                @if ($errors->any())
+                    <div class="alert alert-danger m-0 mt-3">
+                        @foreach ($errors->all() as $error)
+                            <div>{{ $error }}</div>
+                        @endforeach
+                    </div>
+                @endif
             </div>
-        @endif
+        </div>
     </div>
 </div>
 @endsection

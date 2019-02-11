@@ -101,13 +101,19 @@ class TicketController extends Controller
         $comment->admin_only = request('admin_only') ? true : false;
         $comment->save();
 
-        if ($comment->admin_only == false && Auth::check() && Auth::user()->isAdmin()) {
-            $ticket->ticket_status = 4;
-            $ticket->admin_id = Auth::user()->id;
-            $ticket->answer_time = date('d.m.Y H:i:s');
-            $ticket->save();
-            $messageRaw = "На ваш тикет ответили";
-            MailSender::send($messageRaw, $ticket);
+        if ($comment->admin_only == false) {
+            if (Auth::check() && Auth::user()->isAdmin()) {
+                $ticket->ticket_status = 4;
+                $ticket->admin_id = Auth::user()->id;
+                $ticket->answered_at = date('d.m.Y H:i:s');
+                $ticket->save();
+                $messageRaw = "На ваш тикет ответили";
+                MailSender::send($messageRaw, $ticket);
+            } else {
+                $ticket->ticket_status = 4;
+                $ticket->answer_time = date('d.m.Y H:i:s');
+                $ticket->save();
+            }
         }
 
         return back();
@@ -187,6 +193,7 @@ class TicketController extends Controller
         $messageRaw = "Спасибо за обращение в службу поддержки ChocoLife. Можете отслеживать ваш запрос здесь:";
         $ticket->save();
         MailSender::send($messageRaw, $ticket);
+
         return redirect()->route('tickets.show', ['hash' => $ticket->hash]);
     }
 

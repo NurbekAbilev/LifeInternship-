@@ -2,7 +2,7 @@
 
 use App\User;
 
-class UserCreateTest extends \Codeception\Test\Unit
+class UserTest extends \Codeception\Test\Unit
 {
     /**
      * @var \UnitTester
@@ -47,11 +47,17 @@ class UserCreateTest extends \Codeception\Test\Unit
 
     public function testUserDelete()
     {
-        $this->tester->seeRecord('users', ['email' => 'admin@chocolife.me']);
+        $user = new User;
+        $user->name = 'John';
+        $user->email = 'john@test.com';
+        $user->password = Hash::make('secret');
+        $user->role = 0;
+        $user->save();
 
-        $user = User::where('email', 'admin@chocolife.me')->first();
+        $this->tester->seeRecord('users', ['email' => 'john@test.com']);
+
         $user->delete();
 
-        $this->tester->dontSeeRecord('users', ['email' => 'admin@chocolife.me']);
+        $this->tester->dontSeeRecord('users', ['email' => 'jhon@test.com']);
     }
 }

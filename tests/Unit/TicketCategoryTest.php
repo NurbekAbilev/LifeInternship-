@@ -36,9 +36,4 @@ class TicketCategoryTest extends \Codeception\Test\Unit
 
         $this->assertTrue($category->validate());
     }
-
-    public function testAtLeastOneCategoryMustExist()
-    {
-        $this->assertTrue(TicketCategory::all()->count() > 0);
-    }
 }

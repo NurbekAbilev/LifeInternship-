@@ -22,13 +22,13 @@ class TicketTest extends \Codeception\Test\Unit
     {
         $ticket = new Ticket;
         $ticket->full_name = 'John Doe';
-        $ticket->email = 'valid@email.com';
-        $ticket->phone_num = '87477201107';
+        $ticket->email = 'john@test.com';
+        $ticket->phone_num = '+77777777777';
         $ticket->description = 'description';
         $ticket->ticket_category = 1;
         $ticket->ticket_status = 1;
         $ticket->hash = md5($ticket->id . date('Y-m-d H:i:s') . $ticket->full_name . $ticket->email);
-        $ticket->save();
+
         $this->assertTrue($ticket->validate());
     }
 
@@ -37,40 +37,44 @@ class TicketTest extends \Codeception\Test\Unit
         $ticket = new Ticket;
         $ticket->full_name = 'John Doe';
         $ticket->email = 'INVALID';
-        $ticket->phone_num = '87477201107';
+        $ticket->phone_num = '+77777777777';
         $ticket->description = 'description';
         $ticket->ticket_category = 1;
         $ticket->ticket_status = 1;
         $ticket->hash = md5($ticket->id . date('Y-m-d H:i:s') . $ticket->full_name . $ticket->email);
-//        $ticket->save();
+
         $this->assertFalse($ticket->validate());
     }
 
-    public function testTicketCreation()
+    public function testTicketCreate()
+    {
+        $this->tester->dontSeeRecord('ticket', ['full_name' => 'John Doe']);
+    
+        $ticket = new Ticket;
+        $ticket->full_name = 'John Doe';
+        $ticket->email = 'john@test.com';
+        $ticket->phone_num = '+77777777777';
+        $ticket->description = 'description';
+        $ticket->ticket_category = 1;
+        $ticket->ticket_status = 1;
+        $ticket->hash = md5($ticket->id . date('Y-m-d H:i:s') . $ticket->full_name . $ticket->email);
+        $ticket->save();
+    
+        $this->tester->seeRecord('ticket', ['full_name' => 'John Doe']);
+    }
+
+    public function testTicketUpdate()
     {
         $ticket = new Ticket;
         $ticket->full_name = 'John Doe';
         $ticket->email = 'john@test.com';
-        $ticket->phone_num = '87477201107';
+        $ticket->phone_num = '+77777777777';
         $ticket->description = 'description';
         $ticket->ticket_category = 1;
         $ticket->ticket_status = 1;
         $ticket->hash = md5($ticket->id . date('Y-m-d H:i:s') . $ticket->full_name . $ticket->email);
         $ticket->save();
         $this->tester->seeRecord('ticket', ['full_name' => 'John Doe']);
-    }
-
-    public function testTicketChange()
-    {
-        $ticket = new Ticket;
-        $ticket->full_name = 'John Doe';
-        $ticket->email = 'john@test.com';
-        $ticket->phone_num = '87477201107';
-        $ticket->description = 'description';
-        $ticket->ticket_category = 1;
-        $ticket->ticket_status = 1;
-        $ticket->hash = md5($ticket->id . date('Y-m-d H:i:s') . $ticket->full_name . $ticket->email);
-        $ticket->save();
 
         $ticket = Ticket::where('full_name', 'John Doe')->first();
         $ticket->full_name = 'John Test';
@@ -81,10 +85,20 @@ class TicketTest extends \Codeception\Test\Unit
         $this->tester->dontSeeRecord('ticket', ['full_name' => 'John Doe']);
     }
 
-    public function testTicketDeletion()
+    public function testTicketDelete()
     {
-        Ticket::where('full_name', 'John Test')->delete();
+        $ticket = new Ticket;
+        $ticket->full_name = 'John Doe';
+        $ticket->email = 'john@test.com';
+        $ticket->phone_num = '+77777777777';
+        $ticket->description = 'description';
+        $ticket->ticket_category = 1;
+        $ticket->ticket_status = 1;
+        $ticket->hash = md5($ticket->id . date('Y-m-d H:i:s') . $ticket->full_name . $ticket->email);
+        $ticket->save();
+        $this->tester->seeRecord('ticket', ['full_name' => 'John Doe']);
+
+        $ticket->delete();
         $this->tester->dontSeeRecord('ticket', ['full_name' => 'John Test']);
     }
-
 }

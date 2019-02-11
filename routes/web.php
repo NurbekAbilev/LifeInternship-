@@ -11,12 +11,12 @@
 |
  */
 
+Auth::routes();
+
 Route::redirect('/', '/tickets/create');
 
-Route::get('/tickets/auto-update', 'TicketController@autoUpdate')->name('tickets.auto-update');
 Route::resource('/tickets','TicketController');
-
-Auth::routes();
+Route::get('/tickets/auto-update', 'TicketController@autoUpdate')->name('tickets.auto-update');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/statistics', 'StatisticsController@index')->name('statistics.index');
@@ -30,4 +30,3 @@ Route::middleware(['auth'])->group(function () {
 
     Route::resource('ticketCategories', 'TicketCategoriesController')->middleware('can:access-categories');
 });
-

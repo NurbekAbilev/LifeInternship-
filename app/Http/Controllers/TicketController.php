@@ -19,7 +19,7 @@ class TicketController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth')->except(['create','store','show']);
+        $this->middleware('auth')->except(['create', 'store', 'show', 'attachment']);
     }
 
     /**
@@ -38,6 +38,18 @@ class TicketController extends Controller
             'categories' => $ticketCategories,
             'statuses' => $ticketStatuses
         ]);
+    }
+
+    public function autoUpdate()
+    {
+        $tickets = Ticket::with('status')
+            ->with('category')
+            ->with('admin')
+            ->orderBy('updated_at', 'desc')
+            ->orderBy('ticket_status')
+            ->get();
+
+        return $tickets;
     }
 
     public function search(Request $request)
@@ -94,11 +106,11 @@ class TicketController extends Controller
             $ticket->admin_id = Auth::user()->id;
             $ticket->answer_time = date('d.m.Y H:i:s');
             $ticket->save();
-            $messageRaw = "Вам ответили на почту";
+            $messageRaw = "На ваш тикет ответили";
             MailSender::send($messageRaw, $ticket);
         }
 
-        return redirect('/ticket/' . $ticket->hash);
+        return back();
     }
 
     public function process(Request $request, Ticket $ticket)
@@ -106,6 +118,7 @@ class TicketController extends Controller
         $ticket->ticket_status = 3;
         $ticket->admin_id = Auth::user()->id;
         $ticket->save();
+    
         return back();
     }
 
@@ -171,7 +184,7 @@ class TicketController extends Controller
             $file_name = $file->hashName();
             $ticket->file_path = $file_name;
         }
-        $messageRaw = "Спасибо за обращение в службу поддержки ChocoLife. Можете отслеживать ваш запрос здесь: ";
+        $messageRaw = "Спасибо за обращение в службу поддержки ChocoLife. Можете отслеживать ваш запрос здесь:";
         $ticket->save();
         MailSender::send($messageRaw, $ticket);
         return redirect()->route('tickets.show', ['hash' => $ticket->hash]);
@@ -185,7 +198,7 @@ class TicketController extends Controller
      */
     public function show($ticket)
     {
-        if (Auth::user() && Auth::user()->isAdmin() && $ticket->ticket_status == 1) {
+        if (Auth::check() && Auth::user()->isAdmin() && $ticket->ticket_status == 1) {
             $ticket->ticket_status = 2;
             $ticket->save();
         }
@@ -227,22 +240,5 @@ class TicketController extends Controller
     {
         //todo
         abort(404);
-    }
-
-    /**
-     * Авто апдейт главной страницы.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function autoUpdate()
-    {
-        $tickets = Ticket::with('status')
-            ->with('category')
-            ->with('admin')
-            ->orderBy('updated_at', 'desc')
-            ->orderBy('ticket_status')
-            ->get();
-
-        return $tickets;
     }
 }

@@ -28,7 +28,7 @@
                            <form class="mb-2 mr-2" method="post" action="{{ route('ticket.process', ['hash' => $ticket->hash]) }}">
                                 @csrf
 
-                                <input class="btn btn-primary" type="submit" value="В обработке">
+                                <input class="btn btn-success" type="submit" value="В обработке">
                             </form>
                            <form method="post" action="{{ route('ticket.close', ['hash' => $ticket->hash]) }}">
                                 @csrf
@@ -38,12 +38,10 @@
                         @endif
                     </div>
                 </div>
-                <p>Описание</p>
+                <p>Описание:</p>
                 <p>{{$ticket->description}}</p>
                 @if ($ticket->file_path)
-                    <a target="_blank" rel="noopener noreferrer" href={{ route('ticket.attachment', ['hash' => $ticket->hash]) }}>
-                        <button class="my-2">Прикрепленный файл</button>
-                    </a>
+                    <a class="btn btn-primary" target="_blank" rel="noopener noreferrer" href={{ route('ticket.attachment', ['hash' => $ticket->hash]) }}>Прикрепленный файл</a>
                 @endif
             </div>
         </div>
@@ -72,7 +70,7 @@
                             name="content" placeholder="Комментарий">{{ old('content') ? old('content') : '' }}</textarea>
 
                         <div class="d-flex justify-content-between align-items-center">
-                            <button class="btn btn-primary">Написать</button>
+                            <button class="btn btn-success">Написать</button>
 
                             @if (Auth::check() && Auth::user()->isAdmin())
                                 <div class="form-group form-check mb-0 h-100">

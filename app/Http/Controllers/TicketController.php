@@ -15,7 +15,7 @@ class TicketController extends Controller
 {
 
     /*
-     *  Авторизация только для create,store,show
+     *  Авторизация только для create, store, show, attachment
      */
     public function __construct()
     {

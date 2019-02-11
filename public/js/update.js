@@ -7,7 +7,6 @@ setInterval(function() {
 		.then(function(json) {
 			if (tickets !== json) {
 				tickets = json;
-				console.log(tickets);
 				let ticketsEl = document.querySelector('#tickets');
 				ticketsEl.innerHTML = '';
 				if (tickets.length > 0) {
@@ -67,14 +66,14 @@ setInterval(function() {
 						}
 						body.append(list);
 						let p = document.createElement('p');
-						p.textContent = 'Описание';
+						p.textContent = 'Описание:';
 						body.append(p);
 						let description = document.createElement('p');
 						description.textContent = ticket.description;
 						body.append(description);
 						let a = document.createElement('a');
 						a.className = 'btn btn-primary';
-						a.href = '/ticket/' + ticket.hash;
+						a.href = '/tickets/' + ticket.hash;
 						a.textContent = 'Посмотреть';
 						body.append(a);
 						card.append(body);

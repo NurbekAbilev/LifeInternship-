@@ -15,8 +15,8 @@ Auth::routes();
 
 Route::redirect('/', '/tickets/create');
 
-Route::resource('/tickets','TicketController');
 Route::get('/tickets/auto-update', 'TicketController@autoUpdate')->name('tickets.auto-update');
+Route::resource('/tickets','TicketController');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/statistics', 'StatisticsController@index')->name('statistics.index');

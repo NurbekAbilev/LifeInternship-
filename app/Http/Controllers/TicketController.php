@@ -107,7 +107,7 @@ class TicketController extends Controller
                 $ticket->admin_id = Auth::user()->id;
                 $ticket->answered_at = date('d.m.Y H:i:s');
                 $ticket->save();
-                $messageRaw = "На ваш тикет ответили";
+                $messageRaw = "На ваш тикет ответили! Ответ можете посмотреть здесь: ";
                 MailSender::send($messageRaw, $ticket);
             } else {
                 $ticket->ticket_status = 4;
@@ -124,7 +124,7 @@ class TicketController extends Controller
         $ticket->ticket_status = 3;
         $ticket->admin_id = Auth::user()->id;
         $ticket->save();
-    
+
         return back();
     }
 
@@ -190,7 +190,7 @@ class TicketController extends Controller
             $file_name = $file->hashName();
             $ticket->file_path = $file_name;
         }
-        $messageRaw = "Спасибо за обращение в службу поддержки ChocoLife. Можете отслеживать ваш запрос здесь:";
+        $messageRaw = "Спасибо за обращение в службу поддержки ChocoLife. Можете отслеживать ваш запрос здесь: ";
         $ticket->save();
         MailSender::send($messageRaw, $ticket);
 

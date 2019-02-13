@@ -23,6 +23,7 @@ class MailSenderTest extends \Codeception\Test\Unit
         $ticket = Ticket::where('id',1)->first();
         $this->assertTrue(MailSender::send("Test message", $ticket));
     }
+    
     public function testSendingInvalidMail()
     {
         $ticket = Ticket::where('id',1)->first();

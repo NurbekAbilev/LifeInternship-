@@ -10,6 +10,7 @@ use App\Models\Comment;
 use Mail;
 use Auth;
 use App\MailSender;
+use Carbon\Carbon;
 
 class TicketController extends Controller
 {
@@ -99,19 +100,20 @@ class TicketController extends Controller
         $comment->ticket_id = $ticket->id;
         $comment->user_id = Auth::check() ? Auth::user()->id : null;
         $comment->admin_only = request('admin_only') ? true : false;
+        $ticket->answered_at = Carbon::now();
         $comment->save();
 
         if ($comment->admin_only == false) {
             if (Auth::check() && Auth::user()->isAdmin()) {
                 $ticket->ticket_status = 4;
                 $ticket->admin_id = Auth::user()->id;
-                $ticket->answered_at = date('d.m.Y H:i:s');
+                $ticket->answered_at = Carbon::now();
                 $ticket->save();
                 $messageRaw = "На ваш тикет ответили! Ответ можете посмотреть здесь: ";
                 MailSender::send($messageRaw, $ticket);
             } else {
                 $ticket->ticket_status = 4;
-                $ticket->answer_time = date('d.m.Y H:i:s');
+                $ticket->answered_at = Carbon::now();
                 $ticket->save();
             }
         }

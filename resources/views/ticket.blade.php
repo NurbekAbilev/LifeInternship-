@@ -26,14 +26,14 @@
                     <div class="d-flex">
                         @if (Auth::check())
                             @if (Auth::user()->isAdmin())
-                                <form class="mb-2 mr-2" method="post" action="{{ route('ticket.process', ['hash' => $ticket->hash]) }}">
+                                <form class="mb-2 mr-2" method="POST" action="{{ route('ticket.process', ['hash' => $ticket->hash]) }}">
                                     @csrf
 
-                                    <input class="btn btn-success" type="submit" value="В обработке">
+                                    <input class="btn btn-danger" type="submit" value="В обработке">
                                 </form>
                             @endif
 
-                            <form method="post" action="{{ route('ticket.close', ['hash' => $ticket->hash]) }}">
+                            <form method="POST" action="{{ route('ticket.close', ['hash' => $ticket->hash]) }}">
                                 @csrf
 
                                 <input class="btn btn-secondary" type="submit" value="Закрыть">

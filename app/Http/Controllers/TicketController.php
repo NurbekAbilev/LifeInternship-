@@ -15,11 +15,11 @@ class TicketController extends Controller
 {
 
     /*
-     *  Авторизация только для create, store, show, attachment
+     *  Авторизация только для 'create', 'store', 'show', 'comment', 'close', 'attachment'
      */
     public function __construct()
     {
-        $this->middleware('auth')->except(['create', 'store', 'show', 'attachment']);
+        $this->middleware('auth')->except(['create', 'store', 'show', 'comment', 'close', 'attachment']);
     }
 
     /**
@@ -105,15 +105,15 @@ class TicketController extends Controller
             if (Auth::check() && Auth::user()->isAdmin()) {
                 $ticket->ticket_status = 4;
                 $ticket->admin_id = Auth::user()->id;
-                $ticket->answered_at = date('d.m.Y H:i:s');
-                $ticket->save();
                 $messageRaw = "На ваш тикет ответили! Ответ можете посмотреть здесь: ";
                 MailSender::send($messageRaw, $ticket);
             } else {
-                $ticket->ticket_status = 4;
-                $ticket->answer_time = date('d.m.Y H:i:s');
-                $ticket->save();
+                if ($ticket->ticket_status != 0 || $ticket->ticket_status != 2) {
+                    $ticket->ticket_status = 3;
+                }
             }
+            $ticket->answered_at = date('Y-m-d H:i:s');
+            $ticket->save();
         }
 
         return back();
@@ -131,7 +131,9 @@ class TicketController extends Controller
     public function close(Request $request, Ticket $ticket)
     {
         $ticket->ticket_status = 5;
-        $ticket->admin_id = Auth::user()->id;
+        if (Auth::check()) {
+            $ticket->admin_id = Auth::user()->id;
+        }
         $ticket->save();
 
         return back();

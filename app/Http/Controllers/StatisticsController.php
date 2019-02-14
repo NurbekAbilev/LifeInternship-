@@ -21,8 +21,8 @@ class StatisticsController extends Controller
 
         foreach ($tickets as $ticket) {
             if (is_null($ticket->answered_at) == FALSE) {
-                $answered_at = Carbon::createFromFormat('Y-d-m H:i:s', $ticket->answered_at);
-                $diff = $ticket->created_at->diffInMinutes($ticket->answered_at);
+                $answered_at = Carbon::createFromFormat('Y-m-d H:i:s', $ticket->answered_at);
+                $diff = $answered_at->diffInMinutes($ticket->created_at);
                 if ($diff <= $intervals[0]) {
                     $stats["$intervals[0]"] = $stats["$intervals[0]"] + 1;
                 }

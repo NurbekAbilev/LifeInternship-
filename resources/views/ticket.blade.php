@@ -32,13 +32,13 @@
                                     <input class="btn btn-danger" type="submit" value="В обработке">
                                 </form>
                             @endif
-
-                            <form method="POST" action="{{ route('ticket.close', ['hash' => $ticket->hash]) }}">
-                                @csrf
-
-                                <input class="btn btn-secondary" type="submit" value="Закрыть">
-                            </form>
                         @endif
+
+                        <form method="POST" action="{{ route('ticket.close', ['hash' => $ticket->hash]) }}">
+                            @csrf
+
+                            <input class="btn btn-secondary" type="submit" value="Закрыть">
+                        </form>
                     </div>
                 </div>
                 <p>Описание:</p>
@@ -52,7 +52,11 @@
         @foreach ($ticket->comments as $comment)
             <div class="card mb-4 {{ $comment->admin_only ? 'border-secondary' : '' }}">
                 <div class="card-header d-flex justify-content-between">
-                    <div>{{ $comment->user->name }}</div>
+                    @if ($comment->user)
+                        <div>{{ $comment->user->name }}</div>
+                    @else
+                        <div>Клиент</div>
+                    @endif
 
                     <div class="text-secondary">{{ $comment->created_at }}</div>
                 </div>

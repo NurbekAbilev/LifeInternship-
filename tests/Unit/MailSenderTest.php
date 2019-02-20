@@ -20,16 +20,16 @@ class MailSenderTest extends \Codeception\Test\Unit
     // tests
     public function testSendingValidMail()
     {
-        $ticket = Ticket::where('id',1)->first();
+        $ticket = Ticket::where('id', 1)->first();
         $this->assertTrue(MailSender::send("Test message", $ticket));
     }
-    
+
     public function testSendingInvalidMail()
     {
-        $ticket = Ticket::where('id',1)->first();
-        $ticket->email="invalid";
+        $ticket = Ticket::where('id', 1)->first();
+        $ticket->email = "invalid";
         $ticket->save();
         $this->assertFalse(MailSender::send("Test message", $ticket));
     }
-    
+
 }

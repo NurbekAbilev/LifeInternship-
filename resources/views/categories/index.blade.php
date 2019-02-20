@@ -11,7 +11,6 @@
 					@endforeach
 				</div>
 			</div>
-
 			<div class="card">
 				<div class="card-header">Новая категория</div>
 

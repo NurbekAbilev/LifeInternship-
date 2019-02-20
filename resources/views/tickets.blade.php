@@ -1,46 +1,47 @@
 <div class="row justify-content-center">
     <div class="col-md-8">
+        <?php echo $tickets->render(); ?>
         <div class="card">
             <div class="card-body">
                 <form method="GET" action="/search/ticket">
-                    <div class="form-row align-items-end">
-                        <div class="form-group col-md-3">
-                            <label for="categorySelect">Категория</label>
+                <div class="form-row align-items-end">
+                    <div class="form-group col-md-3">
+                        <label for="categorySelect">Категория</label>
 
-                            <select class="form-control" id="categorySelect" name="category">
-                                <option value="" selected>Выбрать</option>
+                        <select class="form-control" id="categorySelect" name="category">
+                            <option value="" selected>Выбрать</option>
 
-                                @foreach ($categories as $category)
-                                    <option value="{{ $category->id }}"
-                                    {{ old('category') == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="form-group col-md-3">
-                            <label for="categorySelect">Статус</label>
-
-                            <select class="form-control" id="categorySelect" name="status">
-                                <option value="" selected>Выбрать</option>
-
-                                @foreach ($statuses as $status)
-                                    <option value="{{ $status->id }}"
-                                    {{ old('status') == $status->id ? 'selected' : '' }}>{{ $status->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-
-                        <div class="form-group col-md-3">
-                            <label for="categorySelect">Поиск</label>
-
-                            <input class="form-control" type="text" name="query" placeholder="Поиск"
-                            value="{{ old('query') ? old('query') : '' }}">
-                        </div>
-
-                        <div class="form-group col-md-3">
-                            <button class="btn btn-primary w-100">Искать</button>
-                        </div>
+                            @foreach ($categories as $category)
+                                <option value="{{ $category->id }}"
+                                {{ old('category') == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
+                            @endforeach
+                        </select>
                     </div>
-                </form>
+                    <div class="form-group col-md-3">
+                        <label for="categorySelect">Статус</label>
+
+                        <select class="form-control" id="categorySelect" name="status">
+                            <option value="" selected>Выбрать</option>
+
+                            @foreach ($statuses as $status)
+                                <option value="{{ $status->id }}"
+                                {{ old('status') == $status->id ? 'selected' : '' }}>{{ $status->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="form-group col-md-3">
+                        <label for="categorySelect">Поиск</label>
+
+                        <input class="form-control" type="text" name="query" placeholder="Поиск"
+                        value="{{ old('query') ? old('query') : '' }}">
+                    </div>
+
+                    <div class="form-group col-md-3">
+                        <button class="btn btn-primary w-100">Искать</button>
+                    </div>
+                </div>
+            </form>
 
                 <div id="tickets">
                     @if ($tickets->count() > 0)
@@ -70,6 +71,7 @@
                         <div>Пусто :(</div>
                     @endif
                 </div>
+
             </div>
 
         </div>

@@ -30,7 +30,7 @@ class TicketController extends Controller
      */
     public function index()
     {
-        $tickets = Ticket::with('status')->with('category')->orderBy('updated_at', 'desc')->orderBy('ticket_status')->get();
+        $tickets = Ticket::with('status')->with('category')->orderBy('updated_at', 'desc')->orderBy('ticket_status')->paginate(20);
         $ticketCategories = TicketCategory::all();
         $ticketStatuses = TicketStatus::all();
 
@@ -77,7 +77,7 @@ class TicketController extends Controller
             });
         }
 
-        $tickets = $tickets->orderBy('created_at', 'desc')->orderBy('ticket_status')->get();
+        $tickets = $tickets->orderBy('created_at', 'desc')->orderBy('ticket_status')->paginate(20);
 
         $request->flash();
 
@@ -213,6 +213,7 @@ class TicketController extends Controller
             $ticket->save();
         }
         return view('ticket', ['ticket' => $ticket]);
+        var_dump($ticket);
     }
 
     /**

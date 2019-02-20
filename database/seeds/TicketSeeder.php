@@ -20,7 +20,7 @@ class TicketSeeder extends Seeder
         $categories = TicketCategory::all();
         $users = User::all();
 
-        factory(App\Models\Ticket::class, 2000)->make()->each(function ($ticket) use ($statuses, $categories, $users) {
+        factory(App\Models\Ticket::class, 20)->make()->each(function ($ticket) use ($statuses, $categories, $users) {
             $ticket->ticket_category = $categories->random()->id;
             $ticket->ticket_status = $statuses->random()->id;
             if ($ticket->status->id >= 3) {
